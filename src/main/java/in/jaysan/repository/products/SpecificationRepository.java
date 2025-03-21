@@ -1,0 +1,10 @@
+package in.jaysan.repository.products;
+
+import in.jaysan.entity.products.Specification;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface SpecificationRepository extends JpaRepository<Specification, Long> {
+    List<Specification> findByCategoryAndSubCategory(String category, String subCategory);
+}

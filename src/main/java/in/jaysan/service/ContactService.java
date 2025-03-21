@@ -5,6 +5,7 @@ import in.jaysan.dto.contact.OtherContactDto;
 import in.jaysan.dto.contact.SalesContactDto;
 import in.jaysan.dto.contact.SupportContactDto;
 import in.jaysan.entity.Contact;
+import in.jaysan.option.Status;
 import in.jaysan.repository.ContactRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,9 @@ public class ContactService {
         return contactRepository.findByPurposeIgnoreCase("Contact").stream()
                 .map(contact -> new OtherContactDto(contact.getName(), contact.getPhoneNumber(), contact.getLocation()))
                 .collect(Collectors.toList());
+    }
+
+    public List<Contact> getFilteredContacts(String purpose, Status status) {
+        return contactRepository.findByPurposeAndStatus(purpose, status);
     }
 }

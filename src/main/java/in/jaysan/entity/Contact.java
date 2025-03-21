@@ -1,5 +1,6 @@
 package in.jaysan.entity;
 
+import in.jaysan.option.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +25,7 @@ public class Contact {
     private String companyName;
     private String product;
     private String issue;
-
-
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.PENDING;
+    private String comments;
 }

@@ -5,14 +5,12 @@ import in.jaysan.dto.contact.OtherContactDto;
 import in.jaysan.dto.contact.SalesContactDto;
 import in.jaysan.dto.contact.SupportContactDto;
 import in.jaysan.entity.Contact;
+import in.jaysan.option.Status;
 import in.jaysan.service.ContactService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -52,6 +50,14 @@ public class ContactController {
     public ResponseEntity<List<OtherContactDto>> getOtherContactDto()
     {
         return ResponseEntity.ok(contactService.getOtherContactDto());
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<List<Contact>> getFilteredContacts(
+            @RequestParam(required = false) String purpose,
+            @RequestParam(required = false) Status status
+    ) {
+        return ResponseEntity.ok(contactService.getFilteredContacts(purpose, status));
     }
 
 }

@@ -20,6 +20,17 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    @PostMapping
+    public CategoryResponse addCategory(
+            @RequestPart("categoryRequest") String categoryRequestJson,
+            @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        CategoryRequest categoryRequest = objectMapper.readValue(categoryRequestJson, CategoryRequest.class);
+
+        // Handle category and image file logic here
+        return categoryService.addCategory(categoryRequest, imageFile);
+    }
     @GetMapping
     public List<CategoryResponse> getAllCategories() {
         return categoryService.getAllCategories();
@@ -31,16 +42,8 @@ public class CategoryController {
         return ResponseEntity.ok(categoryResponse);
     }
 
-    @PostMapping
-    public CategoryResponse addCategory(
-            @RequestPart("categoryRequest") String categoryRequestJson,
-            @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        CategoryRequest categoryRequest = objectMapper.readValue(categoryRequestJson, CategoryRequest.class);
 
-        return categoryService.addCategory(categoryRequest, imageFile);
-    }
 
 
     @PutMapping("/{id}")

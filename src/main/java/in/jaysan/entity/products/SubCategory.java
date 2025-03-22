@@ -3,24 +3,31 @@ package in.jaysan.entity.products;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Specification {
+public class SubCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String category;
-    private String subCategory;
-    private String youtubeLink;
+    private String subCategoryName;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @ElementCollection
-    @CollectionTable(name = "specifications", joinColumns = @JoinColumn(name = "specification_id"))
-    @MapKeyColumn(name = "specification_label")
-    @Column(name = "specification_value")
+    private List<String> features;
+
+    private String youtubeLink;
+    private String imagePath;
+
+    @ElementCollection
     private Map<String, String> specificationDetails;
 }

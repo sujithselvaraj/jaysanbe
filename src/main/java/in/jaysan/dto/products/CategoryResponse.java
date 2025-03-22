@@ -8,12 +8,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class ProductResponse {
+public class CategoryResponse {
     private Long id;
+    private String categoryName;
     private String imageUrl;
-    private String category;
-    private String subCategory;
     private String description;
-    private List<String> features;
+    private List<SubCategoryResponse> subCategories;
 }

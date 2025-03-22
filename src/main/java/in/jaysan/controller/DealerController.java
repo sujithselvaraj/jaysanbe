@@ -13,6 +13,7 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/api/dealer")
+@CrossOrigin("*")
 public class DealerController {
 
     private DealerService dealerService;

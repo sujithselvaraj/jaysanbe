@@ -6,19 +6,20 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Product {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String categoryName;
     private String imageUrl;
-    private String category;
-    private String subCategory;
+
+    @Lob
     private String description;
 
-    @ElementCollection
-    private List<String> features;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<SubCategory> subCategories;
 }

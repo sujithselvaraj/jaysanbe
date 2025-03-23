@@ -1,6 +1,7 @@
 package in.jaysan.controller;
 
 import in.jaysan.dto.dealer.DealerDto;
+import in.jaysan.dto.dealer.DealerResponseDTO;
 import in.jaysan.entity.Dealer;
 import in.jaysan.service.DealerService;
 import lombok.AllArgsConstructor;
@@ -42,7 +43,14 @@ public class DealerController {
         return ResponseEntity.ok(dealerService.getAll());
     }
 
-    @GetMapping("/{dealerState}")
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DealerResponseDTO> getDealerById(@PathVariable Long id) {
+        DealerResponseDTO dealer = dealerService.getDealerById(id);
+        return ResponseEntity.ok(dealer);
+    }
+
+    @GetMapping("/state/{dealerState}")
     public ResponseEntity<List<Dealer>> getDealersByState(@PathVariable String dealerState) {
         return ResponseEntity.ok(dealerService.getByState(dealerState));
     }

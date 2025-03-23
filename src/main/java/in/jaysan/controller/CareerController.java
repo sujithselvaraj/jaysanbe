@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/careers")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class CareerController {
     private final CareerService careerService;
 

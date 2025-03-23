@@ -1,8 +1,10 @@
 package in.jaysan.service;
 
 import in.jaysan.dto.dealer.DealerDto;
+import in.jaysan.dto.dealer.DealerResponseDTO;
 import in.jaysan.entity.Dealer;
 import in.jaysan.repository.DealerRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,23 @@ public class DealerService {
 
     public List<Dealer> getByState(String dealerState) {
         return dealerRepository.findByDealerState(dealerState);
+    }
+
+
+    public DealerResponseDTO getDealerById(Long id) {
+        Dealer dealer = dealerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Dealer not found with ID: " + id));
+
+        return new DealerResponseDTO(
+                dealer.getId(),
+                dealer.getDealerName(),
+                dealer.getDealerPhoneNumber(),
+                dealer.getDealerEmail(),
+                dealer.getAddressLine1(),
+                dealer.getAddressLine2(),
+                dealer.getDealerLocation(),
+                dealer.getDealerState()
+        );
     }
 
 }

@@ -1,27 +1,17 @@
-package in.jaysan.entity;
+package in.jaysan.dto.career;
 
-import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Career {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CareerResponseDTO {
     private Long id;
-
     private String fullName;
-
     private String email;
-
     private String phoneNumber;
-
     private String message;
-
     private String resumeUrl;
 }

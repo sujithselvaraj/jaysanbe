@@ -48,7 +48,15 @@ public class SubCategoryService {
     }
 
     // ✅ Add SubCategory
-    public SubCategoryResponse addSubCategory(SubCategoryRequest request, MultipartFile imageFile) {
+    public SubCategoryResponse addSubCategory(SubCategoryRequest request,
+                                              MultipartFile imageFile,
+                                              MultipartFile imageFile1,
+                                              MultipartFile imageFile2,
+                                              MultipartFile imageFile3,
+                                              MultipartFile imageFile4
+
+
+                                              ) {
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
@@ -64,6 +72,24 @@ public class SubCategoryService {
             String imagePath = saveImage(imageFile);
             subCategory.setImagePath(imagePath);
         }
+
+        if (imageFile1 != null && !imageFile1.isEmpty()) {
+            String imagePath1 = saveImage(imageFile);
+            subCategory.setImagePath1(imagePath1);
+        }
+        if (imageFile2 != null && !imageFile2.isEmpty()) {
+            String imagePath2 = saveImage(imageFile);
+            subCategory.setImagePath2(imagePath2);
+        }
+        if (imageFile3 != null && !imageFile3.isEmpty()) {
+            String imagePath3 = saveImage(imageFile);
+            subCategory.setImagePath3(imagePath3);
+        }
+        if (imageFile4 != null && !imageFile4.isEmpty()) {
+            String imagePath4 = saveImage(imageFile);
+            subCategory.setImagePath4(imagePath4);
+        }
+
 
 
         SubCategory saved = subCategoryRepository.save(subCategory);
@@ -102,6 +128,27 @@ public class SubCategoryService {
         if (request.getImageFile() != null && !request.getImageFile().isEmpty()) {
             String imagePath = saveImage(request.getImageFile());
             subCategory.setImagePath(imagePath);
+        }
+
+        // Handle image update
+        if (request.getImageFile1() != null && !request.getImageFile1().isEmpty()) {
+            String imagePath1 = saveImage(request.getImageFile1());
+            subCategory.setImagePath1(imagePath1);
+        }
+        // Handle image update
+        if (request.getImageFile2() != null && !request.getImageFile2().isEmpty()) {
+            String imagePath2 = saveImage(request.getImageFile2());
+            subCategory.setImagePath2(imagePath2);
+        }
+        // Handle image update
+        if (request.getImageFile3() != null && !request.getImageFile3().isEmpty()) {
+            String imagePath3 = saveImage(request.getImageFile3());
+            subCategory.setImagePath3(imagePath3);
+        }
+        // Handle image update
+        if (request.getImageFile4() != null && !request.getImageFile4().isEmpty()) {
+            String imagePath4 = saveImage(request.getImageFile4());
+            subCategory.setImagePath(imagePath4);
         }
 
         return mapToResponse(subCategoryRepository.save(subCategory));
@@ -157,7 +204,11 @@ public class SubCategoryService {
                 subCategory.getFeatures(),
                 subCategory.getYoutubeLink(),
                 subCategory.getSpecificationDetails(),
-                subCategory.getImagePath()  // 🆕 Return image URL
+                subCategory.getImagePath(),
+                subCategory.getImagePath1(),
+                subCategory.getImagePath2(),
+                subCategory.getImagePath3(),
+                subCategory.getImagePath4()
         );
     }
 }

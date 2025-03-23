@@ -17,4 +17,9 @@ public class SubCategoryResponse {
     private String youtubeLink;
     private Map<String, String> specificationDetails;
     private String imagePath;  // 🆕 Added to return the image URL
+
+    private String imagePath1;
+    private String imagePath2;
+    private String imagePath3;
+    private String imagePath4;
 }

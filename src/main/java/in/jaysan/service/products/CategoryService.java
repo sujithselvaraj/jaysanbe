@@ -147,7 +147,11 @@ public class CategoryService {
                                 sub.getFeatures(),
                                 sub.getYoutubeLink(),
                                 sub.getSpecificationDetails(),
-                                sub.getImagePath()
+                                sub.getImagePath(),
+                                sub.getImagePath1(),
+                                sub.getImagePath2(),
+                                sub.getImagePath3(),
+                                sub.getImagePath4()
                         ))
                         .collect(Collectors.toList()) : null  // Prevent NullPointerException
         );

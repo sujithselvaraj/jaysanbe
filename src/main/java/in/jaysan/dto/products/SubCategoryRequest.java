@@ -17,4 +17,9 @@ public class SubCategoryRequest {
     private String youtubeLink;
     private Map<String, String> specificationDetails;
     private MultipartFile imageFile;  //  Added for image upload
+
+    private MultipartFile imageFile1;
+    private MultipartFile imageFile2;
+    private MultipartFile imageFile3;
+    private MultipartFile imageFile4;
 }

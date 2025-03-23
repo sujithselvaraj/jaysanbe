@@ -28,6 +28,11 @@ public class SubCategory {
     private String youtubeLink;
     private String imagePath;
 
+    private String imagePath1;
+    private String imagePath2;
+    private String imagePath3;
+    private String imagePath4;
+
     @ElementCollection
     private Map<String, String> specificationDetails;
 }

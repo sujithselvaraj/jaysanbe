@@ -52,4 +52,14 @@ public class ContactService {
     public List<Contact> getFilteredContacts(String purpose, Status status) {
         return contactRepository.findByPurposeAndStatus(purpose, status);
     }
+
+    public void updateStatus(Long id, Status status, String comments) {
+        Contact contact = contactRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Contact not found"));
+        contact.setStatus(status);
+        if (comments != null) {
+            contact.setComments(comments);
+        }
+        contactRepository.save(contact);
+    }
 }

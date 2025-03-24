@@ -60,4 +60,10 @@ public class ContactController {
         return ResponseEntity.ok(contactService.getFilteredContacts(purpose, status));
     }
 
+    @PutMapping("/update/status")
+    public ResponseEntity<String> updateStatus(@RequestParam Long id, @RequestParam Status status, @RequestParam(required = false) String comments) {
+        contactService.updateStatus(id, status, comments);
+        return ResponseEntity.ok("Status updated successfully");
+    }
+
 }

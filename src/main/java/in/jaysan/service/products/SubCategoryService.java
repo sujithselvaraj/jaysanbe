@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -48,15 +49,7 @@ public class SubCategoryService {
     }
 
     // ✅ Add SubCategory
-    public SubCategoryResponse addSubCategory(SubCategoryRequest request,
-                                              MultipartFile imageFile,
-                                              MultipartFile imageFile1,
-                                              MultipartFile imageFile2,
-                                              MultipartFile imageFile3,
-                                              MultipartFile imageFile4
-
-
-                                              ) {
+    public SubCategoryResponse addSubCategory(SubCategoryRequest request, List<MultipartFile> imageFiles) {
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
@@ -68,33 +61,24 @@ public class SubCategoryService {
         subCategory.setSpecificationDetails(request.getSpecificationDetails());
 
         // Handle image upload
-        if (imageFile != null && !imageFile.isEmpty()) {
-            String imagePath = saveImage(imageFile);
-            subCategory.setImagePath(imagePath);
+        List<String> imagePaths = new ArrayList<>();
+        for (MultipartFile imageFile : imageFiles) {
+            if (imageFile != null && !imageFile.isEmpty()) {
+                imagePaths.add(saveImage(imageFile));
+            }
         }
 
-        if (imageFile1 != null && !imageFile1.isEmpty()) {
-            String imagePath1 = saveImage(imageFile);
-            subCategory.setImagePath1(imagePath1);
-        }
-        if (imageFile2 != null && !imageFile2.isEmpty()) {
-            String imagePath2 = saveImage(imageFile);
-            subCategory.setImagePath2(imagePath2);
-        }
-        if (imageFile3 != null && !imageFile3.isEmpty()) {
-            String imagePath3 = saveImage(imageFile);
-            subCategory.setImagePath3(imagePath3);
-        }
-        if (imageFile4 != null && !imageFile4.isEmpty()) {
-            String imagePath4 = saveImage(imageFile);
-            subCategory.setImagePath4(imagePath4);
-        }
-
-
+        // Assign images to their respective fields
+        if (imagePaths.size() > 0) subCategory.setImagePath(imagePaths.get(0));
+        if (imagePaths.size() > 1) subCategory.setImagePath1(imagePaths.get(1));
+        if (imagePaths.size() > 2) subCategory.setImagePath2(imagePaths.get(2));
+        if (imagePaths.size() > 3) subCategory.setImagePath3(imagePaths.get(3));
+        if (imagePaths.size() > 4) subCategory.setImagePath4(imagePaths.get(4));
 
         SubCategory saved = subCategoryRepository.save(subCategory);
         return mapToResponse(saved);
     }
+
 
     //  Get All SubCategories
     public List<SubCategoryResponse> getAllSubCategories() {
@@ -109,7 +93,7 @@ public class SubCategoryService {
     }
 
     //  Update SubCategory
-    public SubCategoryResponse updateSubCategory(Long id, SubCategoryRequest request) {
+    public SubCategoryResponse updateSubCategory(Long id, SubCategoryRequest request, List<MultipartFile> imageFiles) {
         SubCategory subCategory = subCategoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("SubCategory not found"));
 
@@ -125,31 +109,18 @@ public class SubCategoryService {
         subCategory.setSpecificationDetails(request.getSpecificationDetails());
 
         // Handle image update
-        if (request.getImageFile() != null && !request.getImageFile().isEmpty()) {
-            String imagePath = saveImage(request.getImageFile());
-            subCategory.setImagePath(imagePath);
+        List<String> imagePaths = new ArrayList<>();
+        for (MultipartFile imageFile : imageFiles) {
+            if (imageFile != null && !imageFile.isEmpty()) {
+                imagePaths.add(saveImage(imageFile));
+            }
         }
 
-        // Handle image update
-        if (request.getImageFile1() != null && !request.getImageFile1().isEmpty()) {
-            String imagePath1 = saveImage(request.getImageFile1());
-            subCategory.setImagePath1(imagePath1);
-        }
-        // Handle image update
-        if (request.getImageFile2() != null && !request.getImageFile2().isEmpty()) {
-            String imagePath2 = saveImage(request.getImageFile2());
-            subCategory.setImagePath2(imagePath2);
-        }
-        // Handle image update
-        if (request.getImageFile3() != null && !request.getImageFile3().isEmpty()) {
-            String imagePath3 = saveImage(request.getImageFile3());
-            subCategory.setImagePath3(imagePath3);
-        }
-        // Handle image update
-        if (request.getImageFile4() != null && !request.getImageFile4().isEmpty()) {
-            String imagePath4 = saveImage(request.getImageFile4());
-            subCategory.setImagePath(imagePath4);
-        }
+        if (imagePaths.size() > 0) subCategory.setImagePath(imagePaths.get(0));
+        if (imagePaths.size() > 1) subCategory.setImagePath1(imagePaths.get(1));
+        if (imagePaths.size() > 2) subCategory.setImagePath2(imagePaths.get(2));
+        if (imagePaths.size() > 3) subCategory.setImagePath3(imagePaths.get(3));
+        if (imagePaths.size() > 4) subCategory.setImagePath4(imagePaths.get(4));
 
         return mapToResponse(subCategoryRepository.save(subCategory));
     }
@@ -196,7 +167,7 @@ public class SubCategoryService {
 
 
     // 🔄 Helper Method to map SubCategory to Response DTO
-    private SubCategoryResponse mapToResponse(SubCategory subCategory) {
+    public SubCategoryResponse mapToResponse(SubCategory subCategory) {
         return new SubCategoryResponse(
                 subCategory.getId(),
                 subCategory.getSubCategoryName(),

@@ -58,14 +58,17 @@ public class CategoryService {
         return mapToResponse(category);
     }
     public CategoryResponse addCategory(CategoryRequest categoryRequest, MultipartFile imageFile) throws IOException {
-        String filePath = saveImage(imageFile);
+        String filePath = imageFile != null ? saveImage(imageFile) : null;
+
         Category category = new Category();
         category.setCategoryName(categoryRequest.getCategoryName());
-        category.setImageUrl(filePath);
+        category.setImageUrl(filePath); // Ensure this doesn't break if filePath is null
         category.setDescription(categoryRequest.getDescription());
+
         category = categoryRepository.save(category);
         return mapToCategoryResponse(category);
     }
+
 
     public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest, MultipartFile imageFile) throws IOException {
         return categoryRepository.findById(id).map(category -> {

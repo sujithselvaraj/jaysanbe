@@ -21,7 +21,5 @@ public class Career {
 
     private String phoneNumber;
 
-    private String message;
-
     private String resumeUrl;
 }

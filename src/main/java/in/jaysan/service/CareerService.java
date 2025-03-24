@@ -40,7 +40,6 @@ public class CareerService {
                 .fullName(requestDTO.getFullName())
                 .email(requestDTO.getEmail())
                 .phoneNumber(requestDTO.getPhoneNumber())
-                .message(requestDTO.getMessage())
                 .resumeUrl(resumeUrl)
                 .build();
 
@@ -71,7 +70,6 @@ public class CareerService {
         career.setFullName(requestDTO.getFullName());
         career.setEmail(requestDTO.getEmail());
         career.setPhoneNumber(requestDTO.getPhoneNumber());
-        career.setMessage(requestDTO.getMessage());
 
         // If a new resume is uploaded, replace the old one
         if (resume != null && !resume.isEmpty()) {
@@ -98,7 +96,6 @@ public class CareerService {
                 .fullName(career.getFullName())
                 .email(career.getEmail())
                 .phoneNumber(career.getPhoneNumber())
-                .message(career.getMessage())
                 .resumeUrl(career.getResumeUrl())
                 .build();
     }

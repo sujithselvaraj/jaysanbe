@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import in.jaysan.dto.products.CategoryRequest;
 import in.jaysan.dto.products.CategoryResponse;
 import in.jaysan.service.products.CategoryService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,15 +21,11 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping
+    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public CategoryResponse addCategory(
-            @RequestPart("categoryRequest") String categoryRequestJson,
-            @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
+            @RequestPart("categoryRequest") CategoryRequest categoryRequest,
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        CategoryRequest categoryRequest = objectMapper.readValue(categoryRequestJson, CategoryRequest.class);
-
-        // Handle category and image file logic here
         return categoryService.addCategory(categoryRequest, imageFile);
     }
     @GetMapping

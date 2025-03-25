@@ -27,25 +27,25 @@ public class ContactService {
 
     public List<SupportContactDto> getSupportContactDto() {
         return contactRepository.findByPurposeIgnoreCase("Support").stream()
-                .map(contact -> new SupportContactDto(contact.getName(), contact.getPhoneNumber(), contact.getLocation(), contact.getProduct(), contact.getIssue()))
+                .map(contact -> new SupportContactDto(contact.getId(), contact.getName(), contact.getPhoneNumber(), contact.getLocation(), contact.getProduct(), contact.getIssue(),contact.getStatus(), contact.getComments()))
                 .collect(Collectors.toList());
     }
 
     public List<SalesContactDto> getSalesContactDto() {
         return contactRepository.findByPurposeIgnoreCase("Sales Enquiry").stream()
-                .map(contact -> new SalesContactDto(contact.getName(), contact.getPhoneNumber(), contact.getLocation(), contact.getProduct()))
+                .map(contact -> new SalesContactDto(contact.getId(), contact.getName(), contact.getPhoneNumber(), contact.getLocation(), contact.getProduct(), contact.getStatus(), contact.getComments()))
                 .collect(Collectors.toList());
     }
 
     public List<DealerContactDto> getDealerInterestContactDto() {
         return contactRepository.findByPurposeIgnoreCase("Dealer Partnership").stream()
-                .map(contact -> new DealerContactDto(contact.getName(), contact.getPhoneNumber(), contact.getLocation(), contact.getProduct(), contact.getCompanyName()))
+                .map(contact -> new DealerContactDto(contact.getId(), contact.getName(), contact.getPhoneNumber(), contact.getLocation(), contact.getProduct(), contact.getCompanyName(),contact.getStatus(), contact.getComments()))
                 .collect(Collectors.toList());
     }
 
     public List<OtherContactDto> getOtherContactDto() {
-        return contactRepository.findByPurposeIgnoreCase("Contact").stream()
-                .map(contact -> new OtherContactDto(contact.getName(), contact.getPhoneNumber(), contact.getLocation()))
+        return contactRepository.findByPurposeIgnoreCase("Other").stream()
+                .map(contact -> new OtherContactDto(contact.getId(), contact.getName(), contact.getPhoneNumber(), contact.getLocation(),contact.getStatus(), contact.getComments()))
                 .collect(Collectors.toList());
     }
 

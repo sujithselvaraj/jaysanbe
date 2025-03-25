@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface ContactRepository extends JpaRepository<Contact,Long> {
     List<Contact> findByPurposeIgnoreCase(String purpose);
-    @Query("SELECT c FROM Contact c WHERE (:purpose IS NULL OR c.purpose = :purpose) AND (:status IS NULL OR c.status = :status)")
+    @Query("SELECT c FROM Contact c WHERE (:purpose IS NULL OR c.purpose ILIKE :purpose) AND (:status IS NULL OR c.status = :status)")
     List<Contact> findByPurposeAndStatus(@Param("purpose") String purpose, @Param("status") Status status);
 }

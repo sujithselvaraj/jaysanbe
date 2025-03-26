@@ -62,7 +62,7 @@ public class CategoryService {
 
         Category category = new Category();
         category.setCategoryName(categoryRequest.getCategoryName());
-        category.setImageUrl(filePath); // Ensure this doesn't break if filePath is null
+        category.setImageUrl(filePath);
         category.setDescription(categoryRequest.getDescription());
 
         category = categoryRepository.save(category);

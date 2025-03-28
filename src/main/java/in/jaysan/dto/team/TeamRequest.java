@@ -1,25 +1,17 @@
-package in.jaysan.entity;
+package in.jaysan.dto.team;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "team")
-public class Team {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class TeamRequest {
     private String name;
     private String designation;
     private String email;
     private String whatsappNumber;
-    private String imageUrl;
-
 }

@@ -32,6 +32,7 @@ public class SubCategory {
     private String imagePath2;
     private String imagePath3;
     private String imagePath4;
+    private String brochure;
 
     @ElementCollection
     private Map<String, String> specificationDetails;

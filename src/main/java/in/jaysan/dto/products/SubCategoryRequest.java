@@ -22,4 +22,5 @@ public class SubCategoryRequest {
     private MultipartFile imageFile2;
     private MultipartFile imageFile3;
     private MultipartFile imageFile4;
+    private MultipartFile brochure;
 }

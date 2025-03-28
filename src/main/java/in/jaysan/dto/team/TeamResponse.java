@@ -1,20 +1,15 @@
-package in.jaysan.entity;
+package in.jaysan.dto.team;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "team")
-public class Team {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TeamResponse {
     private Long id;
     private String name;
     private String designation;

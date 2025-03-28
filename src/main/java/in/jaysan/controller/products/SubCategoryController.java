@@ -4,9 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import in.jaysan.dto.products.SubCategoryRequest;
 import in.jaysan.dto.products.SubCategoryResponse;
-import in.jaysan.entity.products.Category;
-import in.jaysan.entity.products.SubCategory;
-import in.jaysan.exception.ResourceNotFoundException;
 import in.jaysan.repository.products.CategoryRepository;
 import in.jaysan.repository.products.SubCategoryRepository;
 import in.jaysan.service.products.SubCategoryService;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -27,14 +23,10 @@ import java.util.Objects;
 @CrossOrigin("*")
 public class SubCategoryController {
     private final SubCategoryService subCategoryService;
-    private final SubCategoryRepository subCategoryRepository;
-    private final CategoryRepository categoryRepository;
 
     public SubCategoryController(SubCategoryService subCategoryService, SubCategoryRepository subCategoryRepository, CategoryRepository categoryRepository) {
         this.subCategoryService = subCategoryService;
-        this.subCategoryRepository = subCategoryRepository;
-        this.categoryRepository = categoryRepository;
-    }
+       }
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SubCategoryResponse> addSubCategory(
             @RequestPart("request") String requestJson,
@@ -42,8 +34,9 @@ public class SubCategoryController {
             @RequestPart(value = "imageFile1", required = false) MultipartFile imageFile1,
             @RequestPart(value = "imageFile2", required = false) MultipartFile imageFile2,
             @RequestPart(value = "imageFile3", required = false) MultipartFile imageFile3,
-            @RequestPart(value = "imageFile4", required = false) MultipartFile imageFile4) {
-
+            @RequestPart(value = "imageFile4", required = false) MultipartFile imageFile4,
+            @RequestPart(value = "brochure", required = false) MultipartFile brochure
+    ) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             SubCategoryRequest request = objectMapper.readValue(requestJson, SubCategoryRequest.class);
@@ -51,7 +44,7 @@ public class SubCategoryController {
             List<MultipartFile> imageFiles = Arrays.asList(imageFile0, imageFile1, imageFile2, imageFile3, imageFile4);
             imageFiles.removeIf(Objects::isNull);
 
-            return ResponseEntity.ok(subCategoryService.addSubCategory(request, imageFiles));
+            return ResponseEntity.ok(subCategoryService.addSubCategory(request, imageFiles,brochure));
         } catch (JsonProcessingException e) {
             return ResponseEntity.badRequest().body(null);
         }
@@ -80,7 +73,9 @@ public class SubCategoryController {
             @RequestPart(value = "imageFile1", required = false) MultipartFile imageFile1,
             @RequestPart(value = "imageFile2", required = false) MultipartFile imageFile2,
             @RequestPart(value = "imageFile3", required = false) MultipartFile imageFile3,
-            @RequestPart(value = "imageFile4", required = false) MultipartFile imageFile4) {
+            @RequestPart(value = "imageFile4", required = false) MultipartFile imageFile4,
+            @RequestPart(value = "brochure", required = false) MultipartFile brochure
+    ) {
 
         ObjectMapper objectMapper = new ObjectMapper();
         SubCategoryRequest request;
@@ -92,7 +87,7 @@ public class SubCategoryController {
         }
 
         List<MultipartFile> imageFiles = Arrays.asList(imageFile0, imageFile1, imageFile2, imageFile3, imageFile4);
-        return subCategoryService.updateSubCategory(id, request, imageFiles);
+        return subCategoryService.updateSubCategory(id, request, imageFiles,brochure);
     }
 
     // Updated Service Method

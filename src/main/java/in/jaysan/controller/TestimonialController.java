@@ -1,5 +1,6 @@
 package in.jaysan.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;;
 import in.jaysan.dto.testimonial.TestimonialRequest;
 import in.jaysan.dto.testimonial.TestimonialResponse;
 import in.jaysan.service.TestimonialService;
@@ -24,13 +25,26 @@ public class TestimonialController {
     public ResponseEntity<TestimonialResponse> addTestimonial(
             @RequestPart("testimonialRequest")TestimonialRequest testimonialRequest,
             @RequestPart(value = "imageFile")MultipartFile imageFile) throws IOException {
-        System.out.println("Received TestimonialRequest: " + testimonialRequest.getProductName());
-
         return ResponseEntity.ok(testimonialService.addTestimonial(testimonialRequest,imageFile));
     }
 
     @GetMapping
     public ResponseEntity<List<TestimonialResponse>> getAllTestimonial() {
         return ResponseEntity.ok(testimonialService.getAllTestimonials());
+    }
+    @PutMapping("/{id}")
+    public TestimonialResponse updateTestimonial(
+            @PathVariable Long id,
+            @RequestPart("testimonialRequest") TestimonialRequest testimonialRequestJson,
+            @RequestPart(value = "imageFile" , required = false) MultipartFile imageFile
+    ) throws JsonProcessingException {
+
+        return testimonialService.updateTestimonial(id,testimonialRequestJson,imageFile);
+
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteTestimonial(@PathVariable Long id) {
+        testimonialService.deleteTestimonial(id);
     }
 }

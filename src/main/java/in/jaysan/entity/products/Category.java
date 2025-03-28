@@ -3,7 +3,6 @@ package in.jaysan.entity.products;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Getter

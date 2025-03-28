@@ -3,6 +3,7 @@ package in.jaysan.service;
 import in.jaysan.dto.testimonial.TestimonialRequest;
 import in.jaysan.dto.testimonial.TestimonialResponse;
 import in.jaysan.entity.Testimonial;
+import in.jaysan.exception.ResourceNotFoundException;
 import in.jaysan.repository.TestimonialRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -79,7 +80,6 @@ public class TestimonialService {
                     .contentType(file.getContentType())
                     .build();
 
-            // store in bucket
             PutObjectResponse response= s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
 
             if(response.sdkHttpResponse().isSuccessful())
@@ -98,4 +98,29 @@ public class TestimonialService {
         }
     }
 
+    public TestimonialResponse updateTestimonial(Long id, TestimonialRequest testimonialRequest, MultipartFile imageFile) {
+        return testimonialRepository.findById(id).map(testimonial -> {
+            System.out.println("Updating Testimonial with ID: " + id);
+
+            if (imageFile != null && !imageFile.isEmpty()) {
+                System.out.println("Saving new image...");
+                testimonial.setImageUrl(saveImage(imageFile));
+            }
+
+            testimonial.setCustomerName(testimonialRequest.getCustomerName());
+            testimonial.setProductName(testimonialRequest.getProductName());
+            testimonial.setCustomerLocation(testimonialRequest.getCustomerLocation());
+            testimonial.setCustomerReview(testimonialRequest.getCustomerReview());
+
+
+            Testimonial testimonial1 = testimonialRepository.save(testimonial);
+            System.out.println("Testimonial updated successfully!");
+
+            return mapToTestimonialResponse(testimonial1);
+        }).orElseThrow(() -> new ResourceNotFoundException("Testimonial not found"));
+    }
+
+    public void deleteTestimonial(Long id) {
+        testimonialRepository.deleteById(id);
+    }
 }

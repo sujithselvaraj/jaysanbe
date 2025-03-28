@@ -12,14 +12,15 @@ import java.util.Map;
 public class SubCategoryResponse {
     private Long id;
     private String subCategoryName;
-    private String categoryName;  // Include category name for reference
+    private String categoryName;
     private List<String> features;
     private String youtubeLink;
     private Map<String, String> specificationDetails;
-    private String imagePath;  // 🆕 Added to return the image URL
+    private String imagePath;
 
     private String imagePath1;
     private String imagePath2;
     private String imagePath3;
     private String imagePath4;
+    private String brochure;
 }

@@ -36,10 +36,7 @@ public class CategoryService {
     @Value("${aws.s3.bucketname}")
     private String bucketName;
 
-
     private final S3Client s3Client;
-
-
 
     public CategoryService(CategoryRepository categoryRepository,S3Client s3Client) {
         this.categoryRepository = categoryRepository;
@@ -154,7 +151,8 @@ public class CategoryService {
                                 sub.getImagePath1(),
                                 sub.getImagePath2(),
                                 sub.getImagePath3(),
-                                sub.getImagePath4()
+                                sub.getImagePath4(),
+                                sub.getBrochure()
                         ))
                         .collect(Collectors.toList()) : null  // Prevent NullPointerException
         );

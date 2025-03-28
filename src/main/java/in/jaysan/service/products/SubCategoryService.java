@@ -18,9 +18,6 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -37,8 +34,6 @@ public class SubCategoryService {
 
     private final S3Client s3Client;
 
-    private final String UPLOAD_DIR = "uploads/subcategories/";  // 🆕 Directory for image storage
-
     public SubCategoryService(SubCategoryRepository subCategoryRepository,
                               CategoryRepository categoryRepository,
                               S3Client s3Client
@@ -49,7 +44,7 @@ public class SubCategoryService {
     }
 
     // ✅ Add SubCategory
-    public SubCategoryResponse addSubCategory(SubCategoryRequest request, List<MultipartFile> imageFiles) {
+    public SubCategoryResponse addSubCategory(SubCategoryRequest request, List<MultipartFile> imageFiles, MultipartFile brochure) {
         Category category = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
@@ -62,11 +57,19 @@ public class SubCategoryService {
 
         // Handle image upload
         List<String> imagePaths = new ArrayList<>();
-        for (MultipartFile imageFile : imageFiles) {
-            if (imageFile != null && !imageFile.isEmpty()) {
-                imagePaths.add(saveImage(imageFile));
+        if (imageFiles != null) {
+            for (MultipartFile imageFile : imageFiles) {
+                if (imageFile != null && !imageFile.isEmpty()) {
+                    imagePaths.add(saveImage(imageFile));
+                }
             }
         }
+
+        String filepath = null;
+        if (brochure != null && !brochure.isEmpty()) {
+            filepath = saveImage(brochure);
+        }
+        subCategory.setBrochure(filepath);
 
         // Assign images to their respective fields
         if (imagePaths.size() > 0) subCategory.setImagePath(imagePaths.get(0));
@@ -93,7 +96,7 @@ public class SubCategoryService {
     }
 
     //  Update SubCategory
-    public SubCategoryResponse updateSubCategory(Long id, SubCategoryRequest request, List<MultipartFile> imageFiles) {
+    public SubCategoryResponse updateSubCategory(Long id, SubCategoryRequest request, List<MultipartFile> imageFiles , MultipartFile brochure) {
         SubCategory subCategory = subCategoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("SubCategory not found"));
 
@@ -110,17 +113,38 @@ public class SubCategoryService {
 
         // Handle image update
         List<String> imagePaths = new ArrayList<>();
-        for (MultipartFile imageFile : imageFiles) {
-            if (imageFile != null && !imageFile.isEmpty()) {
-                imagePaths.add(saveImage(imageFile));
+
+        if (imageFiles != null && !imageFiles.isEmpty()) {
+            for (MultipartFile imageFile : imageFiles) {
+                if (imageFile != null && !imageFile.isEmpty()) {
+                    imagePaths.add(saveImage(imageFile));
+                }
             }
         }
 
-        if (imagePaths.size() > 0) subCategory.setImagePath(imagePaths.get(0));
-        if (imagePaths.size() > 1) subCategory.setImagePath1(imagePaths.get(1));
-        if (imagePaths.size() > 2) subCategory.setImagePath2(imagePaths.get(2));
-        if (imagePaths.size() > 3) subCategory.setImagePath3(imagePaths.get(3));
-        if (imagePaths.size() > 4) subCategory.setImagePath4(imagePaths.get(4));
+        String filepath = null;
+        if (brochure != null && !brochure.isEmpty()) {
+            filepath = saveImage(brochure);
+            subCategory.setBrochure(filepath);
+        }
+        else {
+            subCategory.setBrochure(subCategory.getBrochure());
+        }
+
+
+        if (!imagePaths.isEmpty()) {
+            if (imagePaths.size() > 0) subCategory.setImagePath(imagePaths.get(0));
+            if (imagePaths.size() > 1) subCategory.setImagePath1(imagePaths.get(1));
+            if (imagePaths.size() > 2) subCategory.setImagePath2(imagePaths.get(2));
+            if (imagePaths.size() > 3) subCategory.setImagePath3(imagePaths.get(3));
+            if (imagePaths.size() > 4) subCategory.setImagePath4(imagePaths.get(4));
+        } else {
+            imagePaths.add(subCategory.getImagePath());
+            imagePaths.add(subCategory.getImagePath1());
+            imagePaths.add(subCategory.getImagePath2());
+            imagePaths.add(subCategory.getImagePath3());
+            imagePaths.add(subCategory.getImagePath4());
+        }
 
         return mapToResponse(subCategoryRepository.save(subCategory));
     }
@@ -179,7 +203,8 @@ public class SubCategoryService {
                 subCategory.getImagePath1(),
                 subCategory.getImagePath2(),
                 subCategory.getImagePath3(),
-                subCategory.getImagePath4()
+                subCategory.getImagePath4(),
+                subCategory.getBrochure()
         );
     }
 }

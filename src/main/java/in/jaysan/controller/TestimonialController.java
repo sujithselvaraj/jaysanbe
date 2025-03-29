@@ -37,10 +37,8 @@ public class TestimonialController {
             @PathVariable Long id,
             @RequestPart("testimonialRequest") TestimonialRequest testimonialRequestJson,
             @RequestPart(value = "imageFile" , required = false) MultipartFile imageFile
-    ) throws JsonProcessingException {
-
+    ) {
         return testimonialService.updateTestimonial(id,testimonialRequestJson,imageFile);
-
     }
 
     @DeleteMapping("/{id}")

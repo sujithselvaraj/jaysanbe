@@ -27,8 +27,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/login", "/logout").permitAll()
-                        .requestMatchers("/admin-dashboard").authenticated()
+                        .requestMatchers("/api/login", "/api/logout").permitAll()
+                        .requestMatchers("/admin/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/api/logout")
                         .logoutSuccessUrl("/")
                         .permitAll()
                 );

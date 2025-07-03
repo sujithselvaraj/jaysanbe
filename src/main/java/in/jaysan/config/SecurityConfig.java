@@ -1,5 +1,6 @@
 package in.jaysan.config;
 
+import org.springframework.boot.web.servlet.server.CookieSameSiteSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
@@ -56,7 +58,7 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         // ✅ Define an in-memory user with username "admin" and password "admin123"
         UserDetails admin = User.withUsername("admin")
-                .password(passwordEncoder().encode("admin123"))  // ✅ Password is encoded
+                .password(passwordEncoder().encode("Sujith8248"))  // ✅ Password is encoded
                 .roles("ADMIN")
                 .build();
 
@@ -64,14 +66,19 @@ public class SecurityConfig {
     }
 
     @Bean
+    public CookieSameSiteSupplier applicationCookieSameSiteSupplier() {
+        return CookieSameSiteSupplier.ofNone();
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+//    @Bean
+    private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));  // ✅ Allow React frontend
+        configuration.setAllowedOrigins(List.of("http://localhost:3000","https://jaysanagriindustrial.netlify.app"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -79,5 +86,11 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public CorsFilter corsFilter()
+    {
+        return new CorsFilter(corsConfigurationSource());
     }
 }

@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: springpass
+      MYSQL_DATABASE: jaysan
+      MYSQL_USER: springuser
+      MYSQL_PASSWORD: springpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  jaysan-backend:
+    build: .
+    depends_on:
+      - mysql
+    environment:
+      DATABASE_URL: "jdbc:mysql://mysql:3306/jaysan"
+      DATABASE_USERNAME: springuser
+      DATABASE_PASSWORD: springpass
+      AWS_ACCESS_KEY: AKIAV7TRT4RBCK3URPR4
+      AWS_SECRET_KEY: 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
+      AWS_REGION: eu-north-1
+      AWS_BUCKETNAME: jaysan
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql-data:
